@@ -18,10 +18,9 @@ class Upload extends Component {
       return function(event){
         const base64data = event.target.result.split(",")[1];
         const json = atob(base64data);
-
         // using ehtereumjs-wallet to private key
-        const wallet = EthWallet.fromV3(json, "OGRiMDdmNmU1YmUwNGUzODA0ODQ4MTc2", true);
-        const privateKey = wallet.getPrivateKeyString();
+        // const wallet = EthWallet.fromV3(json, this.state.passphrase, true);
+        // const privateKey = wallet.getPrivateKeyString();
         // 可以比對 MyEtherWallet -> View Wallet Info
 
         react.setState({
@@ -42,6 +41,7 @@ class Upload extends Component {
     e.preventDefault();
     
     // Flow會檢查必定要HTMLInputElement的物件才能有輸入值
+    console.log(this.state.passphrase);
     const wallet = EthWallet.fromV3(this.state.keystore, this.state.passphrase, true);
     const privateKey = wallet.getPrivateKeyString();
     this.setState({
