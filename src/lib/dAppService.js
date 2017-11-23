@@ -1,7 +1,7 @@
 const Web3 = require('web3');
 const web3 = new Web3();
 
-web3.setProvider(new web3.providers.HttpProvider('https://ropsten.infura.io/YJ5zuNbAkmYQY3kFn4cZ'));
+web3.setProvider(new web3.providers.HttpProvider('https://ropsten.infura.io/osGEgKzYAw7qneXZ4kAm'));
 
 const execFetch = async (url, payload) => {
   const res = await fetch(url, {
