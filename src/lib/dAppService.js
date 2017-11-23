@@ -53,3 +53,12 @@ export const getTransactionCount = (account) => {
 export const sendRawTransaction = (signedTransactionData, callback) => {
   return web3.eth.sendRawTransaction(signedTransactionData, callback);
 };
+
+
+export const getTransaction = (transactionHash, callback) => {
+  return web3.eth.getTransaction(transactionHash, callback);
+}
+
+export const getTransactionReceipt = (transactionHash, callback) => {
+  return web3.eth.getTransactionReceipt(transactionHash, callback);
+}
