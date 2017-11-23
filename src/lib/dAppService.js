@@ -32,3 +32,24 @@ export const getBlockNumber = () => {
 export const getAddressBalanceLoad = (address) => {
   return web3.fromWei(web3.eth.getBalance(address), "ether").toString(10);
 };
+
+
+export const getGasPrice = () => {
+  return web3.eth.gasPrice;
+};
+
+export const toHex = (arg) => {
+  return web3.toHex(arg);
+}
+
+export const toWei = (number, unit) => {
+  return web3.toWei(number, unit);
+}
+
+export const getTransactionCount = (account) => {
+  return web3.eth.getTransactionCount(account);
+};
+
+export const sendRawTransaction = (signedTransactionData, callback) => {
+  return web3.eth.sendRawTransaction(signedTransactionData, callback);
+};
