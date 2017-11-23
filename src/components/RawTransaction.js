@@ -2,6 +2,12 @@ import React from 'react'
 import Tx from 'ethereumjs-tx'
 import Abi from 'ethereumjs-abi'
 import PropTypes from 'prop-types'
+import {getGasPrice} from '../lib/dAppService';
+import {getTransactionCount} from '../lib/dAppService';
+import {sendRawTransaction} from '../lib/dAppService';
+import {toHex} from '../lib/dAppService';
+import {toWei} from '../lib/dAppService';
+
 
 class RawTransaction extends React.Component {
   state = {
@@ -36,22 +42,26 @@ class RawTransaction extends React.Component {
      * value: web3.toHex(web3.toWei(25, 'ether'))
      * data: 單純送錢就留空
      */
-    const rawTx = {
-      nonce: '0x00',
-      gasPrice: '0x09184e72a000', 
-      gasLimit: '0x2710',
-      to: '0x0000000000000000000000000000000000000000', 
-      value: '0x00', 
-      data: ''//encodeData
-    }
+
+    const testSender = '0xed45c2db45c8728fdee65683c5f0f6e09aaf54c2'
+    const testReceiver = '0xcA72391860CbC20372c97180e4F2159771F24D4b'
+
+    const testValue = toHex(toWei(25, 'gwei'))
+
+    const gasPrice = getGasPrice();
+    const gasLimit = 21000;
+
+    // Notice: Becuase the transaction nonce is start from 0
+    // So the return value of getTransactionCount should be use in the following transaction directly.
+    const nonce = getTransactionCount();
 
     const sendRawTx = {
-      "nonce": "0x26",
-      "from":"0x7c20badacd20f09f972013008b5e5dae82670c8d",
-      "to":"0xd6026ddc3a2be02a3577de714a98e24dc4a89dbf",
-      "value":"0x22",
-      "gasPrice":"0x737be7600",
-      "gasLimit": "0x5209"
+      "nonce": nonce,
+      "from":testSender,
+      "to":testReceiver,
+      "value": testValue,
+      "gasPrice": toHex(gasPrice), 
+      "gasLimit": toHex(gasLimit)
     }
 
     const tx = new Tx(sendRawTx)
@@ -60,7 +70,16 @@ class RawTransaction extends React.Component {
     const serializedTx = tx.serialize()
     console.log(serializedTx.toString('hex'))
 
-    // 呼叫 sendRawTransaction('0x' + tx.serialize().toString('hex'))
+    // ref: https://github.com/ethereum/wiki/wiki/JavaScript-API#web3ethsendtransaction
+    sendRawTransaction('0x' + serializedTx.toString('hex'), function(err, transactionHash) {
+      if (err) {
+        console.log(err);
+      }
+      else {
+        console.log('tHash',transactionHash);
+      }
+    });
+
 
     this.setState({
       rawTransaction: serializedTx.toString('hex')
