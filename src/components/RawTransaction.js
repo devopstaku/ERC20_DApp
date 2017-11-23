@@ -3,7 +3,9 @@ import Tx from 'ethereumjs-tx'
 import Abi from 'ethereumjs-abi'
 import PropTypes from 'prop-types'
 import {getGasPrice} from '../lib/dAppService';
+import {getTransaction} from '../lib/dAppService';
 import {getTransactionCount} from '../lib/dAppService';
+import {getTransactionReceipt} from '../lib/dAppService';
 import {sendRawTransaction} from '../lib/dAppService';
 import {toHex} from '../lib/dAppService';
 import {toWei} from '../lib/dAppService';
@@ -77,6 +79,18 @@ class RawTransaction extends React.Component {
       }
       else {
         console.log('tHash',transactionHash);
+        getTransaction(transactionHash, function(err, tn) {
+          if (err) 
+            console.log(err);
+          console.log('getTransaction', tn);
+        });
+
+        // FIXME: While got the Transaction Hash, it may still could not get the transacation receipt
+        getTransactionReceipt(transactionHash, function(err, receipt) {
+          if (err)
+            console.log(err);
+          console.log('getTransactionReceipt', receipt);
+        });
       }
     });
 
